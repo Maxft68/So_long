@@ -6,7 +6,7 @@
 /*   By: maxoph <maxoph@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:44:28 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/19 16:57:23 by maxoph           ###   ########.fr       */
+/*   Updated: 2025/03/19 16:57:55 by maxoph           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int main(int argc, char **argv)
 	verif_rectangle(&game);
 	fill_the_map(&game);
 	close_all_array(&game);
-}ok
+}
 
 void	verif_name_map(char **argv)
 {
