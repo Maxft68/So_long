@@ -6,7 +6,7 @@
 /*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 15:48:34 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/01/05 19:08:01 by mdsiurds         ###   ########.fr       */
+/*   Updated: 2025/03/19 04:26:04 by mdsiurds         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	free_all(char **s, char **s1)
 	}
 }
 
-int	ft_strchr(const char *s, int c)
+int	ft_strchr_int(const char *s, int c)
 {
 	size_t	i;
 
@@ -45,6 +45,7 @@ int	ft_strchr(const char *s, int c)
 
 char	*get_next_line(int fd)
 {
+	printf("ici ???????????");
 	static char	*to_save = NULL;
 	t_variable	v;
 
@@ -54,7 +55,7 @@ char	*get_next_line(int fd)
 	v.temp_read = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!v.temp_read)
 		return (free_all(&to_save, NULL), NULL);
-	if (to_save && ft_strchr(to_save, '\n') != -1)
+	if (to_save && ft_strchr_int(to_save, '\n') != -1)
 		return (free_all(&v.temp_read, NULL), ft_separator(&v, &to_save));
 	while (1)
 	{
@@ -67,7 +68,7 @@ char	*get_next_line(int fd)
 		v.temp_save = ft_strjoin(to_save, v.temp_read);
 		free_all(&to_save, NULL);
 		to_save = v.temp_save;
-		if (ft_strchr(v.temp_read, '\n') != -1)
+		if (ft_strchr_int(v.temp_read, '\n') != -1)
 			return (free_all(&v.temp_read, NULL), ft_separator(&v, &to_save));
 	}
 }
@@ -76,7 +77,7 @@ char	*ft_separator(t_variable *v, char **to_save)
 {
 	if (!to_save || !*to_save)
 		return (NULL);
-	v->newline_index = ft_strchr(*to_save, '\n');
+	v->newline_index = ft_strchr_int(*to_save, '\n');
 	if (v->newline_index == -1)
 		return (v->line = *to_save, *to_save = NULL, v->line);
 	v->line = ft_substr(*to_save, 0, v->newline_index + 1);

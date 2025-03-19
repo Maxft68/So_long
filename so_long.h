@@ -6,7 +6,7 @@
 /*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:46:41 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/19 00:30:26 by mdsiurds         ###   ########.fr       */
+/*   Updated: 2025/03/19 03:26:34 by mdsiurds         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "./libft/libft/libft.h"
 # include "./libft/printf/ft_printf.h"
+# include "./libft/gnl/get_next_line.h"
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -43,6 +44,7 @@ typedef struct s_game
 void	initialize(t_game *game, char **argv);
 void	verif_name_map(char **argv);
 void	verif_open(t_game *game, char **argv);
+void	verif_rectangle(t_game *game);
 
 
 #endif
