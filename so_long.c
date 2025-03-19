@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxoph <maxoph@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:44:28 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/19 04:28:32 by mdsiurds         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:50:05 by maxoph           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int main(int argc, char **argv)
 	initialize(&game, argv);
 	verif_open(&game, argv);
 	verif_rectangle(&game);
+	fill_the_map(&game);
+	close_all_array(&game);
 }
 
 void	verif_name_map(char **argv)
@@ -47,39 +49,126 @@ void	verif_open(t_game *game, char **argv)
 
 void	initialize(t_game *game, char **argv)
 {
+	game->map = NULL;
+	game->map_to_check = NULL;
 	game->nb_rainbow = -1;
 	game->name_map = argv[1];
 	game->nb_players = -1;
 	game->fd = -1;
+	game->len = -10;
+	game->first_len = -10;
+	game->game_line = 1;
+}
+void close_all_array(t_game *game)
+{
+	if (game->map)
+		free_array(game->map);
+	game->map = NULL;
+	if (game->map_to_check)
+		free_array(game->map_to_check);
+	game->map_to_check = NULL;
+}
+
+void	free_array(char **array)
+{
+	int	i;
+
+	if (!array)
+		return ;
+	i = 0;
+	while (array && array[i])
+	{
+		free(array[i]);
+		array[i] = NULL;
+		i++;
+	}
+	free(array);
+	return ;
 }
 
 void	verif_rectangle(t_game *game)
 {
-	int len = -10;
-	int temp = -10;
 	char *line;
-	int fd = open(game->name_map, O_RDONLY);
-
-	ft_printf("len =%d\n", len);
-	ft_printf("temp =%d\n", temp);
-	ft_printf("fd =%d\n", fd);
-	line = get_next_line(fd);
-	ft_printf("linebeforeSF =%s\n", line);
-	len = ft_strlen(line);
-	ft_printf("line =%s\n", line);
-	free(line);
-	while (get_next_line(fd))
+	game->fd = open(game->name_map, O_RDONLY);
+	if (game->fd == -1)
 	{
-		temp = ft_strlen(line);
-		ft_printf("line =%s\n", line);
-		ft_printf("len =%d\n", len);
-		ft_printf("temp =%d\n", temp);
-		if (temp != len)
+		ft_putstr_fd("Error\nNot possible to open the map\n", 1);
+		exit(1);
+	}
+	line = get_next_line(game->fd);
+	if (!line)
+		exit(1);
+	game->first_len = ft_strlen(line);
+	if (line[game->first_len - 1] == '\n')
+			game->first_len--;
+	free(line);
+	while ((line = get_next_line(game->fd)))
+	{
+		if (!line)
+			exit(1);
+		game->game_line++;
+		game->len = ft_strlen(line);
+		if (line[game->len - 1] == '\n')
+			game->len--;
+		if (game->first_len != game->len)
 		{
 			ft_putstr_fd("Error\nPlease, use a rectangle map\n", 1); // remettre sur 2 a la fin
 			free(line);
 			exit(1);
-		}	
+		}
 		free(line);
 	}
+	close(game->fd);
+}
+
+void print_map(char **map)
+{
+	int i;
+	
+	if (!map)
+		return;
+		
+	i = 0;
+	while (map[i])
+	{
+		printf("%s", map[i]);
+		i++;
+	}
+	printf("\n");
+}
+void	fill_the_map(t_game *game)
+{
+	char *map;
+	int i;
+	game->fd = open(game->name_map, O_RDONLY);
+	if (game->fd == -1)
+	{
+		ft_putstr_fd("Error\nNot possible to open the map\n", 1);
+		exit(1);
+	}
+	game->map = malloc(sizeof(char *) * (game->game_line + 1));
+	if (!game->map)
+		exit(1);
+	game->map_to_check = malloc(sizeof(char *) * (game->game_line + 1));
+	if (!game->map_to_check)
+	{
+		free_array(game->map);
+		exit(1);
+	}
+	i = 0;
+	while ((map = get_next_line(game->fd)))
+	{
+		if (!map)
+			exit(1);
+		game->map[i] = ft_strdup(map);
+		game->map_to_check[i] = ft_strdup(map);
+		i++;
+		free(map);
+	}
+	game->map[i] = NULL;
+	game->map_to_check[i] = NULL;
+	printf("\n\nmap\n");
+	print_map(game->map);
+	printf("\n\nmap_to_check\n");
+	print_map(game->map_to_check);
 }

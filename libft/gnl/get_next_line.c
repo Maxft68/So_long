@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
+/*   By: maxoph <maxoph@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/27 15:48:34 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/19 04:26:04 by mdsiurds         ###   ########.fr       */
+/*   Updated: 2025/03/19 15:23:24 by maxoph           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ int	ft_strchr_int(const char *s, int c)
 
 char	*get_next_line(int fd)
 {
-	printf("ici ???????????");
 	static char	*to_save = NULL;
 	t_variable	v;
 
@@ -65,7 +64,7 @@ char	*get_next_line(int fd)
 		if (v.bytes_read == 0)
 			return (free_all(&v.temp_read, NULL), ft_separator(&v, &to_save));
 		v.temp_read[v.bytes_read] = '\0';
-		v.temp_save = ft_strjoin(to_save, v.temp_read);
+		v.temp_save = ft_strjoin_gnl(to_save, v.temp_read);
 		free_all(&to_save, NULL);
 		to_save = v.temp_save;
 		if (ft_strchr_int(v.temp_read, '\n') != -1)
@@ -89,7 +88,7 @@ char	*ft_separator(t_variable *v, char **to_save)
 		v->new_to_save = malloc((ft_strlen(v->start) + 1) * sizeof(char));
 		if (!v->new_to_save)
 			return (free_all(to_save, &v->line), NULL);
-		ft_strlcpy(v->new_to_save, v->start, ft_strlen(v->start) + 1);
+		ft_strlcpy_gnl(v->new_to_save, v->start, ft_strlen(v->start) + 1);
 	}
 	return (free_all(to_save, NULL), *to_save = v->new_to_save, v->line);
 }
