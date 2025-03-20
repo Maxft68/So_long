@@ -6,7 +6,7 @@
 /*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:46:41 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/20 10:19:18 by mdsiurds         ###   ########.fr       */
+/*   Updated: 2025/03/20 11:36:29 by mdsiurds         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,17 @@ typedef struct s_game
 {
 	char	**map;
 	char	**map_to_check;
-	int		nb_rainbow;
-	int		nb_players;
 	int		fd;
 	char	*name_map;
 	int		len;
 	int		first_len;
 	int		game_line;
+	int		pos_x;
+	int		pos_y;
+	int		nb_rainbow;
+	int		nb_players;
+	int		nb_unicorn;
+	
 	
 	t_image	*image;
 	
@@ -55,4 +59,6 @@ void	free_array(char **array);
 void	close_all_array(t_game *game);
 void	print_map(char **map); // A SUPPRIMER A LA FIN
 void	ft_exit(char *error, t_game *game);
+void	verif_p_c_e(t_game *game);
+int		is_p_c_e(char test);
 #endif

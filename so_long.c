@@ -6,11 +6,27 @@
 /*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:44:28 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/20 10:36:06 by mdsiurds         ###   ########.fr       */
+/*   Updated: 2025/03/20 12:07:24 by mdsiurds         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
+
+void	initialize(t_game *game, char **argv)
+{
+	game->map = NULL;
+	game->map_to_check = NULL;
+	game->name_map = argv[1];
+	game->fd = -1;
+	game->len = -10;
+	game->first_len = -10;
+	game->game_line = 1;
+	game->nb_rainbow = 0;
+	game->nb_players = 0;
+	game->nb_unicorn = 0;
+	game->pos_x = -1;
+	game->pos_y = -1;
+}
 
 int main(int argc, char **argv)
 {
@@ -22,9 +38,53 @@ int main(int argc, char **argv)
 	verif_open(&game, argv);
 	verif_rectangle(&game);
 	fill_the_map(&game);
-	close_all_array(&game);
+	verif_p_c_e(&game);
+
+
 	
+	close_all_array(&game);
 }
+
+int	is_p_c_e(char test)
+{
+	if (test == 'P' || test == 'C' || test == 'E')
+		return(1);
+	else if (test)
+	return(0);
+}
+
+void	verif_p_c_e(t_game *game)
+{
+	int i;
+	int j;
+	
+	i = -1;
+	while(++i, game->map[i])
+	{
+		j = -1;
+		while(++j, game->map[i][j])
+		{
+			if(is_p_c_e(game->map[i][j]) == 1)
+			{
+				if (game->map[i][j] == 'P')
+				{
+					game->nb_players++;
+					game->pos_x = j;
+					game->pos_y = i;
+				}
+				else if (game->map[i][j] == 'C')
+					game->nb_rainbow++;
+				else if (game->map[i][j] == 'E')
+					game->nb_unicorn++;
+			}
+		}
+	}
+	printf("pos x =%d pos y =%d\n", game->pos_x, game->pos_y);
+	printf("nb players= %d\n", game->nb_players);
+	printf("nb rainbow = %d\n", game->nb_rainbow);
+	printf("nb unicorn = %d\n", game->nb_unicorn);
+}
+
 
 void	ft_exit(char *error, t_game *game)
 {
@@ -54,18 +114,6 @@ void	verif_open(t_game *game, char **argv)
 	}
 }
 
-void	initialize(t_game *game, char **argv)
-{
-	game->map = NULL;
-	game->map_to_check = NULL;
-	game->nb_rainbow = -1;
-	game->name_map = argv[1];
-	game->nb_players = -1;
-	game->fd = -1;
-	game->len = -10;
-	game->first_len = -10;
-	game->game_line = 1;
-}
 
 void close_all_array(t_game *game)
 {

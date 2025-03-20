@@ -13,6 +13,10 @@ comprendre minilibx
 
 si erreur de map : "Error\n" suivi d’un message d’erreur explicite de votre choix.
 char **map = malloc(sizeof(char *) * nb_line + 1);
-11111 
-1CEP1
-11111
+
+x
+| 11111 
+| 1CEP1
+v 11111
+
+y---->
