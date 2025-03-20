@@ -6,7 +6,7 @@
 /*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:44:28 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/20 13:57:01 by mdsiurds         ###   ########.fr       */
+/*   Updated: 2025/03/20 18:15:31 by mdsiurds         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	initialize(t_game *game, char **argv)
 	game->name_map = argv[1];
 	game->fd = -1;
 	game->len = -10;
-	game->first_len = -10;
-	game->game_line = 1;
+	game->first_len = -10; // X
+	game->game_line = 1; // Y
 	game->nb_rainbow = 0;
 	game->nb_players = 0;
 	game->nb_unicorn = 0;
@@ -41,11 +41,23 @@ int main(int argc, char **argv)
 	verif_p_c_e(&game);
 	verif_nb_p_c_e(&game);
 	verif_map_close(&game);
+	verif_all_collectible(t&game);
 
 
 	
 	close_all_array(&game);
 }
+
+
+void	verif_all_collectible(t_point *, t_game *game)
+{
+	int size[2] = {game->first_len, game->game_line};     //first len = X game line = Y
+	int begin[2]= {game->pos_x, game->pos_y};			//game line = Y
+	
+	
+	fill(game->map_to_check, size, begin, '1');
+}
+
 
 void	verif_map_close(t_game *game)
 {
@@ -53,12 +65,14 @@ void	verif_map_close(t_game *game)
 	int j;
 	
 	i = 0;
-	while(game->map[i])
+	while(game->map[i] && i < game->game_line)
 	{
 		j = 0;
-		while(game->map[i][j])
+		while(game->map[i][j] && j < game->first_len)
 		{
 			if ((i == 0 || i == (game->game_line -1)) && game->map[i][j] != '1')
+				ft_exit("Error\nNo wall around the map\n", game);
+			else if ((j == 0 || j == (game->first_len -1)) && game->map[i][j] != '1')
 				ft_exit("Error\nNo wall around the map\n", game);
 			j++;
 		}
@@ -87,7 +101,7 @@ void	verif_nb_p_c_e(t_game *game)
 			ft_putstr_fd("Error\nThe map need 1 exit, no more no less\n", 1); //fd a remettre a la fin
 		if (game->nb_rainbow <= 0)
 			ft_putstr_fd("Error\nThe map need at least, 1 collectible\n", 1); //fd a remettre a la fin
-		exit(1);
+		ft_exit("", game);
 	}
 }
 

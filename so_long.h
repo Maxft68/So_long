@@ -6,7 +6,7 @@
 /*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:46:41 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/20 13:45:34 by mdsiurds         ###   ########.fr       */
+/*   Updated: 2025/03/20 18:10:10 by mdsiurds         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <stdlib.h>
+
 
 typedef struct s_image
 {
@@ -35,8 +36,8 @@ typedef struct s_game
 	int		fd;
 	char	*name_map;
 	int		len;
-	int		first_len;
-	int		game_line;
+	int		first_len; // X
+	int		game_line; // Y
 	int		pos_x;
 	int		pos_y;
 	int		nb_rainbow;
@@ -63,4 +64,6 @@ void	verif_p_c_e(t_game *game);
 int		is_p_c_e(char c, t_game *game);
 void	verif_nb_p_c_e(t_game *game);
 void	verif_map_close(t_game *game);
+void	verif_all_collectible(t_game *game);
+
 #endif
