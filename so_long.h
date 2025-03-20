@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxoph <maxoph@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:46:41 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/19 15:38:21 by maxoph           ###   ########.fr       */
+/*   Updated: 2025/03/20 10:19:18 by mdsiurds         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,5 @@ void	fill_the_map(t_game *game);
 void	free_array(char **array);
 void	close_all_array(t_game *game);
 void	print_map(char **map); // A SUPPRIMER A LA FIN
+void	ft_exit(char *error, t_game *game);
 #endif

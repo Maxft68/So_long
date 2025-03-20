@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   so_long.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: maxoph <maxoph@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:44:28 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/19 16:57:55 by maxoph           ###   ########.fr       */
+/*   Updated: 2025/03/20 10:36:06 by mdsiurds         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,13 @@ int main(int argc, char **argv)
 	verif_rectangle(&game);
 	fill_the_map(&game);
 	close_all_array(&game);
+	
+}
+
+void	ft_exit(char *error, t_game *game)
+{
+	ft_putstr_fd(error, 1); //remettre 2 a la fin
+	close_all_array(game);
 }
 
 void	verif_name_map(char **argv)
@@ -59,6 +66,7 @@ void	initialize(t_game *game, char **argv)
 	game->first_len = -10;
 	game->game_line = 1;
 }
+
 void close_all_array(t_game *game)
 {
 	if (game->map)
@@ -156,14 +164,16 @@ void	fill_the_map(t_game *game)
 		exit(1);
 	}
 	i = 0;
-	while ((map = get_next_line(game->fd)))
+	map = get_next_line(game->fd);
+	if (!map)
+		exit(1);
+	while (map)
 	{
-		if (!map)
-			exit(1);
 		game->map[i] = ft_strdup(map);
 		game->map_to_check[i] = ft_strdup(map);
 		i++;
 		free(map);
+		map = get_next_line(game->fd);
 	}
 	game->map[i] = NULL;
 	game->map_to_check[i] = NULL;
