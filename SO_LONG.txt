@@ -1,12 +1,12 @@
-verif rectangularite de la map
-gnl compter nbre de lignes de la map pour malloc le char **
-stocker x et y du player
+verif rectangularite de la map OK
+gnl compter nbre de lignes de la map pour malloc le char ** OK
+stocker x et y du player OK 
 verif contour murs
-verifier au moins <= 1 collectible == 1porte  == 1joueur et pas + ET seulement caractere autorise
-compter nb de collectible
+verif <= 1 collectible == 1porte  == 1joueur et pas + ET seulement caractere autorise OK
+compter nb de collectible  OK
 si apres flood fill nb de collectible == et si porte accesible a partir du joueur
 verif porte accesible
-si portetrouver et tout les collectible alors map valide sinon tout parcourir compter une seule fois les collectible et la porte, marquer les emplacement deja passer, !!!! flood fill dans une copie de la map !!
+si porte trouver et tout les collectible alors map valide sinon tout parcourir compter une seule fois les collectible et la porte, marquer les emplacement deja passer, !!!! flood fill dans une copie de la map !!
 
 comprendre minilibx
 

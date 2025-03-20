@@ -6,7 +6,7 @@
 /*   By: mdsiurds <mdsiurds@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 22:44:28 by mdsiurds          #+#    #+#             */
-/*   Updated: 2025/03/20 12:07:24 by mdsiurds         ###   ########.fr       */
+/*   Updated: 2025/03/20 13:57:01 by mdsiurds         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,56 @@ int main(int argc, char **argv)
 	verif_rectangle(&game);
 	fill_the_map(&game);
 	verif_p_c_e(&game);
+	verif_nb_p_c_e(&game);
+	verif_map_close(&game);
 
 
 	
 	close_all_array(&game);
 }
 
-int	is_p_c_e(char test)
+void	verif_map_close(t_game *game)
 {
-	if (test == 'P' || test == 'C' || test == 'E')
+	int i;
+	int j;
+	
+	i = 0;
+	while(game->map[i])
+	{
+		j = 0;
+		while(game->map[i][j])
+		{
+			if ((i == 0 || i == (game->game_line -1)) && game->map[i][j] != '1')
+				ft_exit("Error\nNo wall around the map\n", game);
+			j++;
+		}
+		i++;
+	}
+}
+
+int	is_p_c_e(char c, t_game *game)
+{
+	if (c == 'P' || c == 'C' || c == 'E'|| c == '1' || c == '0' || c == '\n')
 		return(1);
-	else if (test)
-	return(0);
+	else
+	{
+		ft_exit("Error\nInvalid character detected in the map\n", game);
+		return(-1);
+	}
+}
+
+void	verif_nb_p_c_e(t_game *game)
+{
+	if (game->nb_players != 1 || game->nb_rainbow <= 0 || game->nb_unicorn <= 0)
+	{
+		if (game->nb_players != 1)
+			ft_putstr_fd("Error\nThe map need 1 player, no more no less\n", 1); //fd a remettre a la fin 
+		if (game->nb_unicorn != 1)
+			ft_putstr_fd("Error\nThe map need 1 exit, no more no less\n", 1); //fd a remettre a la fin
+		if (game->nb_rainbow <= 0)
+			ft_putstr_fd("Error\nThe map need at least, 1 collectible\n", 1); //fd a remettre a la fin
+		exit(1);
+	}
 }
 
 void	verif_p_c_e(t_game *game)
@@ -64,7 +102,7 @@ void	verif_p_c_e(t_game *game)
 		j = -1;
 		while(++j, game->map[i][j])
 		{
-			if(is_p_c_e(game->map[i][j]) == 1)
+			if(is_p_c_e(game->map[i][j], game) == 1)
 			{
 				if (game->map[i][j] == 'P')
 				{
@@ -90,6 +128,7 @@ void	ft_exit(char *error, t_game *game)
 {
 	ft_putstr_fd(error, 1); //remettre 2 a la fin
 	close_all_array(game);
+	exit(1);
 }
 
 void	verif_name_map(char **argv)
@@ -99,7 +138,7 @@ void	verif_name_map(char **argv)
 	len = ft_strlen(argv[1]);
 	if (ft_strncmp(&argv[1][len - 4], ".ber", 4) != 0)
 	{
-		ft_putstr_fd("Error\nPlease, use a valid map\n", 1); // remettre sur 2 a la fin
+		ft_putstr_fd("Error\nPlease, use a valid extension map\n", 1); // remettre sur 2 a la fin
 		exit(1);
 	}
 }
@@ -174,6 +213,7 @@ void	verif_rectangle(t_game *game)
 		}
 		free(line);
 	}
+	printf("game_line =%d\n", game->game_line);
 	close(game->fd);
 }
 
